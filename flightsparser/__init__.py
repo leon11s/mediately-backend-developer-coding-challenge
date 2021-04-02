@@ -40,7 +40,9 @@ NOTE_TABLE_NAME = os.getenv(
 
 # --- REDIS --- #
 REDIS_HOST = os.getenv("REDIS_HOST", str(_cfg.get("REDIS", "REDIS_HOST")))
-REDIS_PORT = os.getenv("REDIS_PORT", str(_cfg.get("REDIS", "REDIS_PORT")))
-EXPIRATION_TIME_SECONDS = os.getenv(
-    "EXPIRATION_TIME_SECONDS", str(_cfg.get("REDIS", "EXPIRATION_TIME_SECONDS"))
+REDIS_PORT = int(os.getenv("REDIS_PORT", str(_cfg.get("REDIS", "REDIS_PORT"))))
+EXPIRATION_TIME_SECONDS = int(
+    os.getenv(
+        "EXPIRATION_TIME_SECONDS", str(_cfg.get("REDIS", "EXPIRATION_TIME_SECONDS"))
+    )
 )

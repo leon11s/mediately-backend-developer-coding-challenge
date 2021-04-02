@@ -12,7 +12,7 @@ from flightsparser import (
     WEATHER_API_KEY,
     WEATHER_API_URL,
 )
-from flightsparser.cache import LocalCache
+from flightsparser.cache import LocalCache, RedisCache
 
 _logger = logging.getLogger(f"{SERVICE_NAME}.{__name__}")
 
@@ -56,25 +56,28 @@ class WeatherScraper:
 
 
 class DepartureScraper:
-    def __init__(self) -> None:
+    def __init__(self, cache="local") -> None:
         self.url = VIENNA_AIRPORT_URL
         self.weather_scraper = WeatherScraper()
-        self.cache = LocalCache()
+        self.cache = None
+        if cache == "local":
+            self.cache = LocalCache()
+        elif cache == "redis":
+            self.cache = RedisCache()
 
-    def extract(self, save_to_cache: bool = True) -> List[DepartureData]:
+    def extract(self) -> List[DepartureData]:
         self.download_page()
         departures = self.__parse_departures()
-        if save_to_cache:
+        if self.cache:
             cache_key = self.__get_cache_key()
             self.cache.add_element(key=cache_key, data=departures)
             print(f"Departures saved to cache: {cache_key}")
         return departures
 
-    def extract_from_cache(self, key: str, cache="local"):
-        if cache == "local":
+    def extract_from_cache(self, key: str):
+        if self.cache:
             return self.cache.get_element(key)
-        elif cache == "redis":
-            pass
+        print("Cache option not enabled!")
 
     def download_page(self) -> None:
         try:

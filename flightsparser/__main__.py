@@ -26,14 +26,14 @@ def main():
         for index, el in enumerate(elements, 1):
             print(f"--> {index}) {el}")
     elif args.extract_departures:
-        scraper = DepartureScraper()
+        scraper = DepartureScraper(cache="local")
         data = scraper.extract()
         print("Extracting departures...")
         for departure in data:
             print(departure)
     elif args.extract_departures_no_cache:
-        scraper = DepartureScraper()
-        data = scraper.extract(save_to_cache=False)
+        scraper = DepartureScraper(cache=None)
+        data = scraper.extract()
         print("Extracting departures no cache...")
         for departure in data:
             print(departure)

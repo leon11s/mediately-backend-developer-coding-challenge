@@ -1,8 +1,10 @@
-from typing import Dict, List
-from flightsparser import CACHE_PATH, REDIS_HOST, REDIS_PORT, EXPIRATION_TIME_SECONDS
-import pickle
 import os
+import pickle
+from typing import Dict, List
+
 import redis
+
+from flightsparser import CACHE_PATH, EXPIRATION_TIME_SECONDS, REDIS_HOST, REDIS_PORT
 
 
 class LocalCache:
@@ -51,12 +53,21 @@ class RedisCache:
         self.redis_client = redis.Redis(host=self.host, port=self.port)
 
     def get_cache_elements(self) -> List:
-        pass
+        keys = self.redis_client.keys()
+        keys = [key.decode() for key in keys]
+        return keys
 
     def get_element(self, key: str) -> List:
         redis_data = self.redis_client.get(key)
-        return pickle.loads(redis_data)
+        if redis_data:
+            return pickle.loads(redis_data)
+        return []
 
     def add_element(self, key: str, data: List) -> None:
         redis_data = pickle.dumps(data)
         self.redis_client.set(key, redis_data, ex=self.expiration_time_seconds)
+
+    def remove_cache(self) -> None:
+        keys = self.get_cache_elements()
+        for key in keys:
+            self.redis_client.delete(key)

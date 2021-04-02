@@ -30,12 +30,12 @@ logger.addHandler(cmd_handler)
 
 logger.info(f"Starting {SERVICE_NAME}...")
 
-temperature_scraper = WeatherScraper()
-departure_scraper = DepartureScraper(download_automatic=True)
-# with open("tests/data/departures.html") as f:
-#     departure_scraper.page_raw_html = f.read()
+# temperature_scraper = WeatherScraper()
+# departure_scraper = DepartureScraper(download_automatic=True)
+# # with open("tests/data/departures.html") as f:
+# #     departure_scraper.page_raw_html = f.read()
 
-# print(departure_scraper.page_raw_html[:5000])
-deps = departure_scraper.extract()
-for dep in deps:
-    print(dep)
+# # print(departure_scraper.page_raw_html[:5000])
+# deps = departure_scraper.extract()
+# for dep in deps:
+#     print(dep)

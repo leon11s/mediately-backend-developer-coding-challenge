@@ -8,17 +8,12 @@ def create_note(departure: DepartureData):
         return "mrzlo"
 
 
-def create_notes(cache=None, key=None, save_to_db=False):
-    if cache == "local":
-        if not key:
-            print("You should provide a cache key when using cache mode.")
-            return
-        scraper = DepartureScraper()
-        departures = scraper.extract_from_cache(key=key, cache="local")
-    elif cache == "redis":
-        pass
+def create_notes(cache="local", key=None, save_to_db=False):
+    if key:
+        scraper = DepartureScraper(cache=cache)
+        departures = scraper.extract_from_cache(key=key)
     else:
-        scraper = DepartureScraper()
+        scraper = DepartureScraper(cache=cache)
         departures = scraper.extract()
     for departure in departures:
         note = create_note(departure)
