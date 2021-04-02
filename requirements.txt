@@ -1,0 +1,6 @@
+requests==2.25.1
+beautifulsoup4==4.9.3
+importlib-resources==5.1.2
+selenium==3.141.0
+SQLAlchemy==1.4.4
+redis==3.5.3
