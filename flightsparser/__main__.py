@@ -43,7 +43,7 @@ def main():
     elif args.create_notes_from_cache:
         if args.cache_key:
             print("Creating notes from cache...")
-            create_notes(cache="local", key=args.cache_key)
+            create_notes(cache="local", key=args.cache_key, save_to_db=True)
         else:
             print("Please provide a cache key.")
 

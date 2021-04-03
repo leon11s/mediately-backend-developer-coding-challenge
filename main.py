@@ -39,3 +39,8 @@ logger.info(f"Starting {SERVICE_NAME}...")
 # deps = departure_scraper.extract()
 # for dep in deps:
 #     print(dep)
+
+
+from flightsparser.db import NotesTable
+
+notes_table = NotesTable()

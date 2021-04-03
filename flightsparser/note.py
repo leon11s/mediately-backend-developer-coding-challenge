@@ -1,4 +1,7 @@
 from flightsparser.scrapers import DepartureScraper, DepartureData
+from flightsparser.db import NotesTable
+
+notes_table = NotesTable()
 
 
 def create_note(departure: DepartureData):
@@ -17,6 +20,7 @@ def create_notes(cache="local", key=None, save_to_db=False):
         departures = scraper.extract()
     for departure in departures:
         note = create_note(departure)
+        departure.note = note
         print(f"{departure}  -> NOTE: {note}")
         if save_to_db:
-            pass
+            notes_table.insert(departure)

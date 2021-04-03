@@ -25,3 +25,7 @@
     - `python -m flightsparser --create-notes`
 - Create notes from cache:
     - `python -m flightsparser --create-notes-from-cache --cache-key <CACHE_KEY>`
+
+
+
+dodjaj skripto za počasni zagon baze

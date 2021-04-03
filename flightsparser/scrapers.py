@@ -27,6 +27,7 @@ class DepartureData:
         self.timestamp = timestamp
         self.city = city
         self.temperature = temperature
+        self.note = None
 
     def __str__(self) -> str:
         return f"Departure to {self.city} at {self.timestamp}. Temp: {self.temperature}"
