@@ -1,10 +1,8 @@
-from sqlalchemy import create_engine
+from sqlalchemy import Column, DateTime, Float, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, DateTime, String, Float, Integer
 from sqlalchemy.sql import text
 
-
-from flightsparser import NOTE_TABLE_NAME, DATABASE_CONN_URI
+from flightsparser import DATABASE_CONN_URI, NOTE_TABLE_NAME
 from flightsparser.scrapers import DepartureData
 
 Base = declarative_base()

@@ -52,6 +52,14 @@ class WeatherScraper:
             return "Addis Abeba"
         elif city_name == "Seoul ICN":
             return "Seoul"
+        elif city_name == "Rom FCO":
+            return "Rome"
+        elif city_name == "London LHR":
+            return "London"
+        elif city_name == "Moskau DME":
+            return "Moscow"
+        elif city_name == "Kiew":
+            return "Kyiv"
         else:
             return city_name
 

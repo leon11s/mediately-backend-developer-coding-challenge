@@ -1,8 +1,15 @@
-from flightsparser import LOG_LEVEL, SERVICE_NAME
-
-from flightsparser.scrapers import DepartureScraper, WeatherScraper
 import logging
+import time
+import traceback
 
+from flightsparser import (
+    CACHE_TYPE,
+    LOG_LEVEL,
+    PARSE_INTERVAL_SECONDS,
+    SAVE_RESULTS_TO_DB,
+    SERVICE_NAME,
+)
+from flightsparser.note import create_notes
 
 logger = logging.getLogger(f"{SERVICE_NAME}")
 
@@ -28,19 +35,21 @@ cmd_handler.setFormatter(log_format)
 logger.addHandler(cmd_handler)
 
 
-logger.info(f"Starting {SERVICE_NAME}...")
-
-# temperature_scraper = WeatherScraper()
-# departure_scraper = DepartureScraper(download_automatic=True)
-# # with open("tests/data/departures.html") as f:
-# #     departure_scraper.page_raw_html = f.read()
-
-# # print(departure_scraper.page_raw_html[:5000])
-# deps = departure_scraper.extract()
-# for dep in deps:
-#     print(dep)
+def main() -> None:
+    cache = CACHE_TYPE
+    if cache == "none":
+        cache = None
+    while True:
+        create_notes(cache=cache, save_to_db=SAVE_RESULTS_TO_DB)
+        time.sleep(PARSE_INTERVAL_SECONDS)
 
 
-from flightsparser.db import NotesTable
-
-notes_table = NotesTable()
+if __name__ == "__main__":
+    try:
+        logger.info(f"Starting {SERVICE_NAME}...")
+        main()
+    except BaseException as exc:
+        traceback_str = "".join(traceback.format_tb(exc.__traceback__))
+        logger.error(f"Unexpected error: {exc}!\n {traceback_str}")
+    finally:
+        logger.info(f"Exiting {SERVICE_NAME}...")

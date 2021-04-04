@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+  flightsparser:
+    container_name: flightsparser
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+      - db
+    environment:
+      LOG_LEVEL: debug
+      SERVICE_NAME: flightsparser
+      PARSE_INTERVAL_SECONDS: 30
+      CACHE_TYPE: redis
+      SAVE_RESULTS_TO_DB: "True"
+      VIENNA_AIRPORT_URL: https://www.viennaairport.com/passagiere/ankunft__abflug/abfluege
+      WEATHER_API_KEY: 58609a9e682c50997f8dfc29cb131d25
+      WEATHER_API_URL: https://api.openweathermap.org/data/2.5/weather 
+      DATABASE_CONN_URI: postgresql+psycopg2://postgres:postgres@db:5432/flightsparser
+      NOTE_TABLE_NAME: notes
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      EXPIRATION_TIME_SECONDS: 1000
+  redis:
+    image: redis:6.0
+    command: redis-server --save "" --appendonly no
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=flightsparser
+
+volumes:
+  postgres_data:
+  

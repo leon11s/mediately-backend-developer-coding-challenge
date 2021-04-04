@@ -2,8 +2,10 @@
 # list caches
 
 import argparse
-from flightsparser.note import create_notes
+
+from flightsparser import CACHE_TYPE, SAVE_RESULTS_TO_DB
 from flightsparser.cache import LocalCache
+from flightsparser.note import create_notes
 from flightsparser.scrapers import DepartureScraper
 
 
@@ -26,7 +28,7 @@ def main():
         for index, el in enumerate(elements, 1):
             print(f"--> {index}) {el}")
     elif args.extract_departures:
-        scraper = DepartureScraper(cache="local")
+        scraper = DepartureScraper(cache=CACHE_TYPE)
         data = scraper.extract()
         print("Extracting departures...")
         for departure in data:
@@ -39,11 +41,13 @@ def main():
             print(departure)
     elif args.create_notes:
         print("Creating notes...")
-        create_notes()
+        create_notes(cache=CACHE_TYPE, save_to_db=SAVE_RESULTS_TO_DB)
     elif args.create_notes_from_cache:
         if args.cache_key:
             print("Creating notes from cache...")
-            create_notes(cache="local", key=args.cache_key, save_to_db=True)
+            create_notes(
+                cache="local", key=args.cache_key, save_to_db=SAVE_RESULTS_TO_DB
+            )
         else:
             print("Please provide a cache key.")
 
