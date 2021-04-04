@@ -1,4 +1,4 @@
-# Mediately backend developerc coding challenge
+# Mediately backend developer coding challenge
 
 ## Usage
 ### Command line interface
