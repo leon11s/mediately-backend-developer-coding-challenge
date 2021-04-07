@@ -89,11 +89,12 @@ class DepartureScraper:
         print("Cache option not enabled!")
 
     def download_page(self) -> None:
+        browser = webdriver.Firefox(
+            firefox_profile=self.__get_webdriver_profile(),
+            firefox_options=self.__get_firefox_options(),
+            executable_path="/usr/bin/geckodriver",
+        )
         try:
-            browser = webdriver.Firefox(
-                firefox_profile=self.__get_webdriver_profile(),
-                firefox_options=self.__get_firefox_options(),
-            )
             browser.get(self.url)
             self.page_raw_html = browser.page_source
             _logger.info(f"Extracting: {browser.title}")
